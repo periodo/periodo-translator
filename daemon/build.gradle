@@ -1,0 +1,25 @@
+plugins {
+    id 'application'
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.apache.jena:jena-core:4.7.0'
+    implementation 'org.apache.jena:jena-arq:4.7.0'
+    implementation 'org.slf4j:slf4j-simple:2.0.7'
+}
+
+application {
+    mainClass = 'periodo.translator.Daemon'
+}
+
+tasks.run.workingDir = '..'

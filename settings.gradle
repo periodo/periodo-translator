@@ -1,0 +1,3 @@
+rootProject.name = 'periodo-translator'
+include('daemon')
+include('server')

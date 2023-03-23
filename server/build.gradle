@@ -1,0 +1,24 @@
+plugins {
+    id 'application'
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.apache.httpcomponents.core5:httpcore5-h2:5.2.1'
+}
+
+application {
+    mainClass = 'periodo.translator.Server'
+    //mainClass = 'org.apache.hc.core5.http2.examples.H2FileServerExample'
+}
+
+tasks.run.workingDir = '..'
