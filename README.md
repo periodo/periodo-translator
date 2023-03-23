@@ -19,4 +19,3 @@ Typical interaction:
 * If translation succeeded, return the translated data with `200 OK`
 * If translation failed, return `404 Not Found` with the message `Translation failed`
 * If translation never started (because no JSON-LD has been submitted yet), return `404 Not Found` with the message `Not found`
-* 
