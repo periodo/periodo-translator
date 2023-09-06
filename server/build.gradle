@@ -18,7 +18,6 @@ dependencies {
 
 application {
     mainClass = 'periodo.translator.Server'
-    //mainClass = 'org.apache.hc.core5.http2.examples.H2FileServerExample'
 }
 
 tasks.run.workingDir = '..'
