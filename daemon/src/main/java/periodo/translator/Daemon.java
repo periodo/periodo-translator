@@ -32,6 +32,7 @@ public class Daemon {
     private static String CSV_SUFFIX = ".csv";
     private static String TMP_PREFIX = "translator.Daemon";
 
+    private static long IDLE_TIMEOUT = getConfiguredInt("IDLE_TIMEOUT") * 1000; // convert to ms
     private static Path TO_TTL_DIR = getConfiguredPath("TO_TTL_DIR");
     private static Path TO_CSV_DIR = getConfiguredPath("TO_CSV_DIR");
     private static Path ERROR_DIR = getConfiguredPath("ERROR_DIR");
@@ -43,6 +44,7 @@ public class Daemon {
     public static void main(final String[] args)
         throws InterruptedException, IOException {
 
+        long lastActivity = System.currentTimeMillis();
 
         while (true) {
             final Path inputPath = getOldestFile(Arrays.asList(TO_TTL_DIR, TO_CSV_DIR));
@@ -55,8 +57,17 @@ public class Daemon {
                 Files.deleteIfExists(errorPath);
 
                 translate(inputPath, outputPath, errorPath);
+
+                lastActivity = System.currentTimeMillis();
             }
+
             Thread.sleep(1000);
+
+            long idleTime = System.currentTimeMillis() - lastActivity;
+            if (idleTime > IDLE_TIMEOUT) {
+                log("Idle timeout exceeded; shutting down");
+                System.exit(0);
+            }
         }
     }
 
@@ -145,6 +156,14 @@ public class Daemon {
         final ResultSet results = QueryExecutionFactory
             .create(CSV_QUERY, model).execSelect();
         ResultSetFormatter.outputAsCSV(outputStream, results);
+    }
+
+    private static int getConfiguredInt(final String var) {
+        final String value = System.getenv(var);
+        if (value == null) {
+            err("%s is not set".formatted(var));
+        }
+        return Integer.parseInt(value);
     }
 
     private static Path getConfiguredPath(final String var) {

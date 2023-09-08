@@ -49,6 +49,7 @@ public class Server {
     private static ContentType TEXT_CSV = ContentType.create(
         "text/csv", StandardCharsets.UTF_8);
 
+    private static String HOSTNAME = getConfiguredString("HOSTNAME", "localhost");
     private static Path TO_TTL_DIR = getConfiguredPath("TO_TTL_DIR");
     private static Path TO_CSV_DIR = getConfiguredPath("TO_CSV_DIR");
     private static Path ERROR_DIR = getConfiguredPath("ERROR_DIR");
@@ -70,6 +71,7 @@ public class Server {
                 .build();
 
         final HttpServer server = ServerBootstrap.bootstrap()
+            .setCanonicalHostName(HOSTNAME)
             .setListenerPort(port)
             .setSocketConfig(socketConfig)
             .setExceptionListener(new LoggingExceptionListener())
@@ -83,6 +85,15 @@ public class Server {
         }));
         log("Listening on port " + port);
         server.awaitTermination(TimeValue.MAX_VALUE);
+    }
+
+    private static String getConfiguredString(final String var, final String def) {
+        final String value = System.getenv(var);
+        if (value == null) {
+            return def;
+        } else {
+            return value;
+        }
     }
 
     private static Path getConfiguredPath(final String var) {
