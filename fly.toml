@@ -1,0 +1,23 @@
+# fly.toml app configuration file generated for periodo-translator on 2023-09-12T18:33:51-04:00
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
+app = "periodo-translator"
+primary_region = "iad"
+
+[build]
+
+[env]
+  HOSTNAME = "periodo-translator.flycast"
+  IDLE_TIMEOUT = "300"
+  OUTPUT_DIR = "/out"
+  ERROR_DIR = "/err"
+  TO_CSV_DIR = "/to_csv"
+  TO_TTL_DIR = "/to_ttl"
+
+[http_service]
+  internal_port = 8080
+  auto_stop_machines = false
+  auto_start_machines = true
+  min_machines_running = 0

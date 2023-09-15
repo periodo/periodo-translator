@@ -7,5 +7,6 @@ RUN mkdir /out
 
 COPY daemon/build/libs/daemon-all.jar /daemon.jar
 COPY server/build/libs/server-all.jar /server.jar
+COPY ./entrypoint.sh /
 
-CMD []
+ENTRYPOINT ["./entrypoint.sh"]
