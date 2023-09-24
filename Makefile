@@ -7,7 +7,7 @@ all: $(JARS)
 $(JARS):
 	./gradlew -q shadowJar
 
-.PHONY: clean mkdirs run_daemon run_server put_ttl get_ttl put_csv get_csv
+.PHONY: clean mkdirs run_daemon run_server put_ttl get_ttl put_csv get_csv stage publish
 
 clean:
 	rm -f $(JARS)
@@ -52,3 +52,10 @@ put_csv: dataset.jsonld
 get_csv:
 	curl -i -X GET \
 	'$(HOST)/dataset.csv'
+
+stage: APP_CONFIG = fly.stage.toml
+
+publish: APP_CONFIG = fly.publish.toml
+
+stage publish: clean $(JARS)
+	fly deploy --config $(APP_CONFIG)

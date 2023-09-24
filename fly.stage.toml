@@ -1,15 +1,10 @@
-# fly.toml app configuration file generated for periodo-translator on 2023-09-12T18:33:51-04:00
-#
-# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
-#
-
-app = "periodo-translator"
+app = "periodo-translator-dev"
 primary_region = "iad"
 
 [build]
 
 [env]
-  HOSTNAME = "periodo-translator.flycast"
+  HOSTNAME = "periodo-translator-dev.flycast"
   IDLE_TIMEOUT = "300"
   OUTPUT_DIR = "/out"
   ERROR_DIR = "/err"
