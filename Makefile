@@ -71,6 +71,7 @@ publish: APP_CONFIG = fly.publish.toml
 stage publish: clean $(JARS)
 	fly deploy \
 	--config $(APP_CONFIG) \
+	--vm-size=performance-1x \
 	--ha=false
 	@echo "\nSending test request...\n"
 	@curl -i \
