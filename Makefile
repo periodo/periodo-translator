@@ -8,11 +8,14 @@ all: $(JARS)
 $(JARS):
 	./gradlew -q shadowJar
 
-.PHONY: clean update_wrapper mkdirs run_daemon run_server put_ttl get_ttl put_csv \
-get_csv stage publish
+.PHONY: clean superclean update_wrapper mkdirs run_daemon run_server put_ttl \
+get_ttl put_csv get_csv stage publish
 
 clean:
 	rm -f $(JARS)
+
+superclean: clean
+	rm -rf .gradle .classpath .project .settings bin build
 
 update_wrapper:
 	gradle help --warning-mode=all
