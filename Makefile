@@ -62,9 +62,22 @@ get_csv:
 	curl -i -X GET \
 	'$(HOST)/dataset.csv'
 
+stage: APP_NAME = periodo-translator-dev
 stage: APP_CONFIG = fly.stage.toml
 
+publish: APP_NAME = periodo-translator
 publish: APP_CONFIG = fly.publish.toml
 
 stage publish: clean $(JARS)
-	fly deploy --config $(APP_CONFIG)
+	fly deploy \
+	--config $(APP_CONFIG) \
+	--ha=false
+	@echo "\nSending test request...\n"
+	@curl -i \
+	-X PUT \
+	-H 'content-type: application/ld+json; charset=UTF-8' \
+	-d '{"@context":{"k":"http://ex.org/k"},"k":"v"}' \
+	http://$(APP_NAME).flycast/test.ttl \
+	&& sleep 2 \
+	&& echo && echo \
+	&& curl -i http://$(APP_NAME).flycast/test.ttl
