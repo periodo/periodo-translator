@@ -1,3 +1,4 @@
+GRADLE_VERSION := 8.4
 JARS := daemon/build/libs/daemon-all.jar server/build/libs/server-all.jar
 
 HOST ?= http://localhost:8080
@@ -7,10 +8,15 @@ all: $(JARS)
 $(JARS):
 	./gradlew -q shadowJar
 
-.PHONY: clean mkdirs run_daemon run_server put_ttl get_ttl put_csv get_csv stage publish
+.PHONY: clean update_wrapper mkdirs run_daemon run_server put_ttl get_ttl put_csv \
+get_csv stage publish
 
 clean:
 	rm -f $(JARS)
+
+update_wrapper:
+	gradle help --warning-mode=all
+	gradle wrapper --gradle-version $(GRADLE_VERSION)
 
 mkdirs:
 	mkdir -p data/to_ttl
