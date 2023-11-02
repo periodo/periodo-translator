@@ -1,4 +1,4 @@
-FROM --platform=linux/amd64 eclipse-temurin:17
+FROM --platform=linux/amd64 eclipse-temurin:21-jre
 
 RUN mkdir /to_ttl
 RUN mkdir /to_csv
