@@ -8,8 +8,8 @@ all: $(JARS)
 $(JARS):
 	./gradlew -q shadowJar
 
-.PHONY: clean superclean update_wrapper mkdirs run_daemon run_server put_ttl \
-get_ttl put_csv get_csv stage publish
+.PHONY: clean superclean update_wrapper mkdirs run_daemon test_daemon \
+run_server put_ttl get_ttl put_csv get_csv stage publish
 
 clean:
 	rm -f $(JARS)
@@ -22,6 +22,7 @@ update_wrapper:
 	gradle wrapper --gradle-version $(GRADLE_VERSION)
 
 mkdirs:
+	rm -rf data
 	mkdir -p data/to_ttl
 	mkdir -p data/to_csv
 	mkdir -p data/err
@@ -34,6 +35,24 @@ run_daemon: mkdirs
 	ERROR_DIR=data/err \
 	OUTPUT_DIR=data/out \
 	./gradlew :daemon:run
+
+test_daemon: mkdirs
+	mkdir -p data/expect
+	curl -L https://n2t.net/ark:/99152/p0dataset.jsonld > data/expect/dataset.jsonld
+	curl -L https://n2t.net/ark:/99152/p0dataset.ttl > data/expect/dataset.ttl
+	curl -L https://n2t.net/ark:/99152/p0dataset.csv > data/expect/dataset.csv
+	cp data/expect/dataset.jsonld data/to_ttl/
+	cp data/expect/dataset.jsonld data/to_csv/
+	IDLE_TIMEOUT=30 \
+	TO_TTL_DIR=data/to_ttl \
+	TO_CSV_DIR=data/to_csv \
+	ERROR_DIR=data/err \
+	OUTPUT_DIR=data/out \
+	./gradlew :daemon:run
+	[ -f data/out/dataset.ttl ] || echo "TTL conversion failed"
+	[ -f data/out/dataset.csv ] || echo "CSV conversion failed"
+	[ -z "$$(ls -A data/err)" ] || \
+	(echo "Errors in data/err:" && ls data/err && exit 1)
 
 run_server: mkdirs
 	TO_TTL_DIR=data/to_ttl \
