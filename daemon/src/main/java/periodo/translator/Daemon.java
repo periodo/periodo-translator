@@ -43,6 +43,7 @@ public class Daemon {
   public static void main(final String[] args) throws InterruptedException, IOException {
 
     long lastActivity = System.currentTimeMillis();
+    log("Starting");
 
     while (true) {
       final Path inputPath = getOldestFile(Arrays.asList(TO_TTL_DIR, TO_CSV_DIR));
