@@ -14,8 +14,8 @@ repositories {
 }
 
 dependencies {
-    implementation 'org.apache.jena:jena-core:5.4.0'
-    implementation 'org.apache.jena:jena-arq:5.4.0'
+    implementation 'org.apache.jena:jena-core:5.5.0'
+    implementation 'org.apache.jena:jena-arq:5.5.0'
     implementation 'org.slf4j:slf4j-simple:2.0.17'
 }
 
