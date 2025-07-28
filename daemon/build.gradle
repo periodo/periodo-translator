@@ -24,3 +24,6 @@ application {
 }
 
 tasks.run.workingDir = '..'
+tasks.withType(JavaCompile) {
+    options.compilerArgs << "-Xlint:deprecation"
+}
