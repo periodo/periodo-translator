@@ -129,7 +129,7 @@ public class Server {
             final Method method = Method.normalizedValueOf(request.getMethod());
 
 
-            final HttpCoreContext coreContext = HttpCoreContext.adapt(context);
+            final HttpCoreContext coreContext = HttpCoreContext.cast(context);
             final EndpointDetails endpoint = coreContext.getEndpointDetails();
 
             log("%s %s from %s".formatted(
